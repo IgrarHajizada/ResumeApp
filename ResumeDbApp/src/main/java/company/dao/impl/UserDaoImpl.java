@@ -21,6 +21,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         String surname = resultSet.getString("surname");
         String phone = resultSet.getString("phone");
         String email = resultSet.getString("email");
+        String profileDesc = resultSet.getString("profile_description");
         int nationalityId = resultSet.getInt("nationality_id");
         int birthplaceId = resultSet.getInt("birthplace_id");
         String nationalityStr = resultSet.getString("nationality");
@@ -31,7 +32,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         Country birthplace = new Country(birthplaceId, birthplaceStr, null);
 
 
-        return new User(id, name, surname, phone, email, birthdate, country, birthplace);
+        return new User(id, name, surname, phone, email, profileDesc, birthdate, country, birthplace);
     }
 
 
@@ -78,12 +79,15 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
     public boolean updateUser(User user) throws SQLException, ClassNotFoundException {
         try (Connection connection = connection()) {
             PreparedStatement preparedStatement =
-                    connection().prepareStatement("update user set name=?, surname=?, email=?, phone=? where id=?");
+                    connection().prepareStatement("update user set name=?, surname=?, " +
+                            "phone=?, email=?, profile_description=?, birthdate=? where id=?");
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getSurname());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4, user.getPhone());
-            preparedStatement.setInt(5, user.getId());
+            preparedStatement.setString(3, user.getPhone());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getProfileDesc());
+            preparedStatement.setDate(6, (java.sql.Date) user.getBirthDate());
+            preparedStatement.setInt(7, user.getId());
             return preparedStatement.execute();
         }
     }
@@ -93,11 +97,14 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
     public boolean addUser(User user) throws SQLException, ClassNotFoundException {
         try (Connection connection = connection()) {
             PreparedStatement preparedStatement = connection().prepareStatement("insert into " +
-                    "user(name,surname,email,phone) values (?,?,?,?) ");
+                    "user(name,surname,email,phone,profile_description,birthdate)" +
+                    " values (?,?,?,?,?,?) ");
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getSurname());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPhone());
+            preparedStatement.setString(5, user.getProfileDesc());
+            preparedStatement.setDate(6, (java.sql.Date) user.getBirthDate());
             return preparedStatement.execute();
         }
     }

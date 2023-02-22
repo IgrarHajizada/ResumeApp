@@ -31,7 +31,8 @@ public class EmploymentHistoryDaoImpl extends AbstractDAO implements EmploymentH
     public List<EmploymentHistory> getAllEmploymentHistoryByUserId(int userId) throws SQLException, ClassNotFoundException {
         List<EmploymentHistory> result = new ArrayList<>();
         try (Connection connection = connection()) {
-            PreparedStatement statement = connection.prepareStatement("select * from employment_history where user_id =?");
+            PreparedStatement statement = connection.prepareStatement("select * from " +
+                    "employment_history where user_id =?");
             statement.setInt(1, userId);
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
