@@ -10,7 +10,13 @@ public interface SkillDaoInter {
 
     public List<Skill> getAll() throws SQLException, ClassNotFoundException;
 
+    public Skill getById(int id) throws SQLException, ClassNotFoundException;
 
+    public boolean updateSkill(Skill skill) throws SQLException, ClassNotFoundException;
+
+    public boolean addSkill(Skill skill) throws SQLException, ClassNotFoundException;
+
+    public boolean deleteSkill(int id) throws SQLException, ClassNotFoundException;
 
 
 }

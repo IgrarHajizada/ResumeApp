@@ -80,14 +80,16 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         try (Connection connection = connection()) {
             PreparedStatement preparedStatement =
                     connection().prepareStatement("update user set name=?, surname=?, " +
-                            "phone=?, email=?, profile_description=?, birthdate=? where id=?");
+                            "phone=?, email=?, profile_description=?, birthdate=?, birthplace_id=?" +
+                            " where id=?");
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getSurname());
             preparedStatement.setString(3, user.getPhone());
             preparedStatement.setString(4, user.getEmail());
             preparedStatement.setString(5, user.getProfileDesc());
             preparedStatement.setDate(6, (java.sql.Date) user.getBirthDate());
-            preparedStatement.setInt(7, user.getId());
+            preparedStatement.setInt(7, user.getBirthPlace().getId());
+            preparedStatement.setInt(8, user.getId());
             return preparedStatement.execute();
         }
     }
